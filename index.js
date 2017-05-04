@@ -6,6 +6,9 @@
  */
 exports.debateflowsapi = function debateflowsapi(req, res) {
 
+  console.log("request")
   console.log(req);
+  console.log(req.body.message);
+  console.log(req.body)
   res.status(200).send('pong');
 };

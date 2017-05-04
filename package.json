@@ -1,0 +1,10 @@
+{
+  "name": "debate-flows-",
+  "version": "0.0.1",
+  "dependencies": {
+    "request": "latest",
+    "googleapis": "latest",
+    "google-auth-library": "latest",
+    "node-mysql": "latest"
+  }
+}

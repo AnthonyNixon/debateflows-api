@@ -8,7 +8,8 @@ exports.debateflowsapi = function debateflowsapi(req, res) {
 
   console.log("request")
   console.log(req);
-  console.log(req.body.message);
+  console.log(req.header)
   console.log(req.body)
+  console.log(req.body.message);
   res.status(200).send('pong');
 };

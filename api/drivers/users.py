@@ -1,4 +1,5 @@
 import dbConnect
+import MySQLdb
 
 # Set up DB connection
 db = dbConnect.connect()
@@ -31,3 +32,25 @@ def get_user(user_id):
         return user
     else:
         return {}
+
+
+def new_user(user_data):
+    print user_data
+    if not user_data['firstname'] and user_data['lastname'] and user_data['email'] and user_data['passwordhash']:
+        return -1
+    else:
+        firstname = user_data['firstname']
+        lastname = user_data['lastname']
+        email = user_data['email']
+        passwordhash = user_data['passwordhash']
+        try:
+            # Execute the SQL command
+            cursor.execute('''INSERT INTO users (firstname, lastname, email, password, status) VALUES (%s, %s, %s, %s, 'student')''', (firstname, lastname, email, passwordhash))
+            # Commit your changes in the database
+            db.commit()
+            print "worked"
+            return cursor.lastrowid
+        except:
+            print "didn't work"
+            db.rollback()
+            return -1

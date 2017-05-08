@@ -1,6 +1,6 @@
 #!flask/bin/python
 from drivers import users
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
@@ -20,6 +20,9 @@ def get_user(user_id):
     return jsonify(users.get_user(user_id))
 
 
+@app.route('/v1/users', methods=['POST'])
+def new_user():
+    return jsonify(users.new_user(request.json))
 
 
 if __name__ == '__main__':

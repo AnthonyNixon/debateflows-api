@@ -1,9 +1,9 @@
 import dbConnect
-import MySQLdb
 
 # Set up DB connection
 db = dbConnect.connect()
 cursor = db.cursor()
+
 
 def get_users():
     cursor.execute("SELECT * FROM users")
@@ -16,7 +16,7 @@ def get_users():
                   'usertype': row[6]}
         users.append(result)
 
-    return users
+    return 200, users
 
 
 def get_user(user_id):
@@ -26,12 +26,12 @@ def get_user(user_id):
 
     if result:
         user = {'id': result[0], 'email': result[1], 'firstname': result[2],
-            'lastname': result[3], 'passwordhash': result[4], 'salt': result[5],
-            'usertype': result[6]}
+                'lastname': result[3], 'passwordhash': result[4], 'salt': result[5],
+                'usertype': result[6]}
 
-        return user
+        return 200, user
     else:
-        return {}
+        return 404, {}
 
 
 def new_user(user_data):
@@ -44,13 +44,12 @@ def new_user(user_data):
         email = user_data['email']
         passwordhash = user_data['passwordhash']
         try:
-            # Execute the SQL command
-            cursor.execute('''INSERT INTO users (firstname, lastname, email, password, status) VALUES (%s, %s, %s, %s, 'student')''', (firstname, lastname, email, passwordhash))
-            # Commit your changes in the database
+            sql = '''INSERT INTO users 
+                    (firstname, lastname, email, password, status) 
+                    VALUES (%s, %s, %s, %s, 'student')'''
+            cursor.execute(sql, (firstname, lastname, email, passwordhash))
             db.commit()
-            print "worked"
-            return cursor.lastrowid
+            return 201, cursor.lastrowid
         except:
-            print "didn't work"
             db.rollback()
-            return -1
+            return 400, "Invalid user data"

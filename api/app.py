@@ -30,8 +30,8 @@ def new_user():
 
 if __name__ == '__main__':
     if os.environ['env'] == "dev":
-        app.run(debug=True, host='0.0.0.0', port=8080)
+        app.run(debug=True, host='0.0.0.0')
     elif os.environ['env'] == "prod":
-        app.run(debug=False, host='0.0.0.0', port=8080)
+        app.run(debug=False, host='0.0.0.0')
     else:
         print "'env' environment variable not set (should be [dev|prod])"

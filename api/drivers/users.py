@@ -1,11 +1,8 @@
 import dbConnect
 
-# Set up DB connection
-db = dbConnect.connect()
-cursor = db.cursor()
-
-
 def get_users():
+    db = dbConnect.connect()
+    cursor = db.cursor()
     cursor.execute("SELECT * FROM users")
     results = cursor.fetchall()
     users = []
@@ -16,14 +13,18 @@ def get_users():
                   'usertype': row[6]}
         users.append(result)
 
+    db.close()
     return 200, users
 
 
 def get_user(user_id):
+    db = dbConnect.connect()
+    cursor = db.cursor()
     print "Getting user with ID: " + str(user_id)
     cursor.execute("SELECT * FROM users WHERE id=%s", (user_id,))
     result = cursor.fetchone()
 
+    db.close()
     if result:
         user = {'id': result[0], 'email': result[1], 'firstname': result[2],
                 'lastname': result[3], 'passwordhash': result[4], 'salt': result[5],
@@ -35,7 +36,9 @@ def get_user(user_id):
 
 
 def new_user(user_data):
-    print user_data
+    db = dbConnect.connect()
+    cursor = db.cursor()
+
     if not user_data['firstname'] and user_data['lastname'] and user_data['email'] and user_data['passwordhash']:
         return -1
     else:
@@ -49,7 +52,10 @@ def new_user(user_data):
                     VALUES (%s, %s, %s, %s, 'student')'''
             cursor.execute(sql, (firstname, lastname, email, passwordhash))
             db.commit()
-            return 201, cursor.lastrowid
+            last_row = cursor.lastrowid
+            db.close()
+            return 201, last_row
         except:
             db.rollback()
+            db.close()
             return 400, "Invalid user data"

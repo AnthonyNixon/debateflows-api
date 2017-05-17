@@ -1,6 +1,7 @@
 #!flask/bin/python
 from drivers import users
 from flask import Flask, jsonify, request
+import os
 
 app = Flask(__name__)
 
@@ -28,4 +29,9 @@ def new_user():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=8080)
+    if os.environ['env'] == "dev":
+        app.run(debug=True, host='0.0.0.0', port=8080)
+    elif os.environ['env'] == "prod":
+        app.run(debug=False, host='0.0.0.0', port=8080)
+    else:
+        print "'env' environment variable not set (should be [dev|prod])"

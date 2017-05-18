@@ -2,8 +2,10 @@ import dbConnect
 import hashlib
 
 def authenticate(login_data):
+    print "connecting to DB"
     db = dbConnect.connect()
     cursor = db.cursor()
+    print "done"
 
     if not login_data['email'] and login_data['password']:
         return -1
@@ -12,7 +14,9 @@ def authenticate(login_data):
         print login_data
         email = login_data['email']
         password = login_data['password']
+        print "calculating hash"
         passwordHash = hashlib.sha512(password).hexdigest()
+        print "done"
 
         cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
         result = cursor.fetchone()

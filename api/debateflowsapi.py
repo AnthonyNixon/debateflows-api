@@ -5,6 +5,7 @@ from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.route('/')
@@ -31,6 +32,7 @@ def new_user():
 
 @app.route('/v1/login', methods=['POST'], strict_slashes=False)
 def auth_user():
+    print "login request"
     (status, data) = login.authenticate(request.json)
     return jsonify(data), status
 

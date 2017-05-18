@@ -8,6 +8,8 @@ def authenticate(login_data):
     if not login_data['email'] and login_data['password']:
         return -1
     else:
+        print "logging in..."
+        print login_data
         email = login_data['email']
         password = login_data['password']
         passwordHash = hashlib.sha512(password).hexdigest()

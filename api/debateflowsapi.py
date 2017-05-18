@@ -1,7 +1,6 @@
 #!flask/bin/python
-from drivers import users
+from drivers import users, login
 from flask import Flask, jsonify, request
-import os
 
 app = Flask(__name__)
 
@@ -27,6 +26,10 @@ def new_user():
     (status, data) = users.new_user(request.json)
     return jsonify(data), status
 
+@app.route('/v1/login', methods=['POST'], strict_slashed=False)
+def auth_user():
+    (status, data) = login.authenticate(request.json)
+    return jsonify(data), status
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

@@ -30,7 +30,7 @@ def new_user():
     (status, data) = users.new_user(request.json)
     return jsonify(data), status
 
-@app.route('/v1/login', methods=['POST', 'OPTIONS'], strict_slashes=False)
+@app.route('/v1/login', methods=['POST'], strict_slashes=False)
 def auth_user():
     print "login request"
     (status, data) = login.authenticate(request.json)
